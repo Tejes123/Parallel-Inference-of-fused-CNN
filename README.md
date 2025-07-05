@@ -1,4 +1,4 @@
-## Improving Inference Throughput of CNN models through Fusion and multi-node Parallelel Inference 
+## Improving Inference Throughput of CNN models through Quantization + Parallelel Inference 
 
 Rapid fast inference of AI models like CNN and LLMs have attained focus from industries. Improving the model throughput without compromising the accuracy is much required in EdgeAI applications.
 
