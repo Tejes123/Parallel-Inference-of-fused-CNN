@@ -1,10 +1,15 @@
-denseet/stage_0
-denseet/stage_1
-denseet/stage_2
-denseet/__pycache__
-3 Stage Resnet/stage_0
-3 Stage Resnet/stage_1
-3 Stage Resnet/stage_2
-3 Stage Resnet/__pycache__
+densenet/stage_0
+densenet/stage_1
+densenet/stage_2
+densenet/__pycache__
+Resnet - 3 nodes parallelism/stage_0
+Resnet - 3 nodes parallelism/stage_1
+Resnet - 3 nodes parallelism/stage_2
+Resnet - 3 nodes parallelism/__pycache__
+
+googleLeNet/stage_0
+googleLeNet/stage_1
+googleLeNet/stage_2
+
 cifar-10-batches-py
 muruga
