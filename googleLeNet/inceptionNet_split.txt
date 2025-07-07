@@ -1,0 +1,36 @@
+Layers:
+
+Conv2d_1a_3x3
+Conv2d_2a_3x3
+Conv2d_2b_3x3
+maxpool1
+Conv2d_3b_1x1
+Conv2d_4a_3x3
+maxpool2
+
+// 5 
+
+Mixed_5b 7
+Mixed_5c 7
+Mixed_5d 7
+Mixed_6a 4
+
+// 30 
+
+Mixed_6b 10
+Mixed_6c 10
+Mixed_6d 10
+
+Mixed_6e 10
+AuxLogits 2 + 1 linear  
+Mixed_7a 6
+Mixed_7b 9
+Mixed_7c 9
+
+avgpool
+dropout
+fc // 1
+
+
+Splitting 
+Total - 
