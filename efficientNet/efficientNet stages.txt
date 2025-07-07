@@ -1,0 +1,12 @@
+0 : Conv2dNormActivation
+1 : FusedMBConv (3)    1 cov 
+2 : FusedMBConv (big) 5     2 conv 
+3 : FusedMBConv (big) 5     2 conv 
+4 : MBConv (6)    
+5 : MBConv(14) 5 conv 
+6 : MBConv(18)
+7 : MBConv (5)
+8 : Conv2dNormActivation
+
+AdaptiveAvgPool2d
+classifier

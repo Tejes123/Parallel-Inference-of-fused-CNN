@@ -84,18 +84,6 @@ sTEPS TO SET
 4. Model eith layer fusion and without tensorrt - Done
 """
 
-# a Function that returns the modified Resnet50 model for CIFAR 10 dataset - last layer has size 10 
-def get_resnet50_for_CIFAR10():
-    # CIFAR 10 has 10 classes, so the last layer should be a fully conneted with size 10
-    net = torchvision.models.resnet152()
-
-    # Get the number of input features to the last fully connected layer
-    in_features = net.fc.in_features
-
-    # Replace the last fully connected layer with a new one for 10 classes
-    net.fc = nn.Linear(in_features, 10)
-    return net
-
 model = torchvision.models.densenet169()
 densenet = list(model.children())[0]
 
@@ -109,9 +97,6 @@ stage2 = get_third_stage_densenet(densenet)
 # """
 
 def save_model_witout_fusion_witout_tensorrt(stage):
-    model = get_resnet50_for_CIFAR10()
-    densenet = list(model.children())[0]
-
     """
     Optional Training Script to train and save the model only Here
     """
