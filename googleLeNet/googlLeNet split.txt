@@ -1,0 +1,29 @@
+
+            PC0 
+conv1
+maxpool1
+conv2
+conv3
+maxpool2
+inception3a - 6CN
+inception3b - 6CN
+maxpool3
+inception4a - 6
+// 21
+
+            PC1 
+inception4b - 6
+inception4c - 6
+inception4d - 6
+inception4e - 6
+//24 
+
+            PC2 
+maxpool4
+inception5a - 6
+inception5b - 6
+aux1 - 1 conv + 2 linear
+aux2 - 1 conv + 2 linear
+avgpool
+dropout
+fc - 
