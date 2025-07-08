@@ -2,6 +2,7 @@ densenet/stage_0
 densenet/stage_1
 densenet/stage_2
 densenet/__pycache__
+
 Resnet - 3 nodes parallelism/stage_0
 Resnet - 3 nodes parallelism/stage_1
 Resnet - 3 nodes parallelism/stage_2
@@ -10,6 +11,14 @@ Resnet - 3 nodes parallelism/__pycache__
 googleLeNet/stage_0
 googleLeNet/stage_1
 googleLeNet/stage_2
+
+efficientNet_v2_medium/stage_0
+efficientNet_v2_medium/stage_1
+efficientNet_v2_medium/stage_2
+
+efficientNet_v2_small/stage_0
+efficientNet_v2_small/stage_1
+efficientNet_v2_small/stage_2
 
 cifar-10-batches-py
 muruga
