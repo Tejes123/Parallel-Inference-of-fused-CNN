@@ -1,8 +1,3 @@
-densenet/stage_0
-densenet/stage_1
-densenet/stage_2
-densenet/__pycache__
-
 Resnet - 3 nodes parallelism/stage_0
 Resnet - 3 nodes parallelism/stage_1
 Resnet - 3 nodes parallelism/stage_2
