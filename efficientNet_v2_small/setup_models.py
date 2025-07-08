@@ -95,6 +95,7 @@ def save_model_witout_fusion_witout_tensorrt(stage):
     """
     Optional Training Script to train and save the model only Here
     """
+    model = torchvision.models.efficientnet_v2_s()
 
     model_in_stage = None
     if(stage == 0):

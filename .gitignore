@@ -3,6 +3,10 @@ Resnet - 3 nodes parallelism/stage_1
 Resnet - 3 nodes parallelism/stage_2
 Resnet - 3 nodes parallelism/__pycache__
 
+densenet 169\stage_0
+densenet 169\stage_1
+densenet 169\stage_2
+
 googleLeNet/stage_0
 googleLeNet/stage_1
 googleLeNet/stage_2

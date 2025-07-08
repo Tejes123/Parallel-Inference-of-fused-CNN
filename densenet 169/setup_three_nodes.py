@@ -85,16 +85,16 @@ sTEPS TO SET
 """
 
 # a Function that returns the modified Resnet50 model for CIFAR 10 dataset - last layer has size 10 
-def get_resnet50_for_CIFAR10():
-    # CIFAR 10 has 10 classes, so the last layer should be a fully conneted with size 10
-    net = torchvision.models.resnet152()
+# def get_resnet50_for_CIFAR10():
+#     # CIFAR 10 has 10 classes, so the last layer should be a fully conneted with size 10
+#     net = torchvision.models.resnet152()
 
-    # Get the number of input features to the last fully connected layer
-    in_features = net.fc.in_features
+#     # Get the number of input features to the last fully connected layer
+#     in_features = net.fc.in_features
 
-    # Replace the last fully connected layer with a new one for 10 classes
-    net.fc = nn.Linear(in_features, 10)
-    return net
+#     # Replace the last fully connected layer with a new one for 10 classes
+#     net.fc = nn.Linear(in_features, 10)
+#     return net
 
 model = torchvision.models.densenet169()
 densenet = list(model.children())[0]
@@ -109,7 +109,7 @@ stage2 = get_third_stage_densenet(densenet)
 # """
 
 def save_model_witout_fusion_witout_tensorrt(stage):
-    model = get_resnet50_for_CIFAR10()
+    model = torchvision.models.densenet169()
     densenet = list(model.children())[0]
 
     """
@@ -155,7 +155,6 @@ def save_model_without_fusion_with_tensorrt(stage):
 
 
 def save_model_with_fusion_without_tensorrt(stage):
-    model = torchvision.models.resnet152()
     """
     If training, load the trained model
     """
@@ -326,12 +325,12 @@ def create_onnx_and_engine_for_stage2(model_path_stage_2, fused = False, batch_s
 
 if __name__ == "__main__":
     print("\n\n @@@@@@@@@@@@@@@@@@@@ WITHOUT FUSION WITHOUT TENSORRT @@@@@@@@@@@@@@@\n\n")
-    # save_model_witout_fusion_witout_tensorrt(stage = 0)  
-    # save_model_witout_fusion_witout_tensorrt(stage = 1)
-    # save_model_witout_fusion_witout_tensorrt(stage = 2)
+    save_model_witout_fusion_witout_tensorrt(stage = 0)  
+    save_model_witout_fusion_witout_tensorrt(stage = 1)
+    save_model_witout_fusion_witout_tensorrt(stage = 2)
 
     print("\n\n @@@@@@@@@@@@@@@@@@@@ WITHOUT FUSION WITH TENSORRT @@@@@@@@@@@@@@@\n\n")
-    # save_model_without_fusion_with_tensorrt(stage = 0)
+    save_model_without_fusion_with_tensorrt(stage = 0)
     save_model_without_fusion_with_tensorrt(stage = 1)
     save_model_without_fusion_with_tensorrt(stage = 2)
 
