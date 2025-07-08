@@ -49,7 +49,7 @@ def without_fusion_without_tensorrt():
     outputs = []
 
     # Define the model
-    model = torchvision.models.efficientnet_v2_s()
+    model = torchvision.models.efficientnet_v2_m()
 
     stage_1 = get_second_stage_efficientNet(model)
     
@@ -147,7 +147,7 @@ def with_fuson_without_tensorrt():
     outputs = []
 
     # Define the model
-    model = torchvision.models.efficientnet_v2_s()
+    model = torchvision.models.efficientnet_v2_m()
 
     stage_1 = get_second_stage_efficientNet(model)
 

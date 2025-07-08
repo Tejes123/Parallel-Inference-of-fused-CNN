@@ -34,7 +34,7 @@ data_loader = get_test_loader(batch_size = 16)
 
 def without_fusion_without_tensorrt():
 
-    model = torchvision.models.efficientnet_v2_s()
+    model = torchvision.models.efficientnet_v2_m()
     
     part_0 = get_first_stage_efficientNet(model)
 
@@ -100,7 +100,7 @@ def without_fusion_with_tensorrt():
     print(f"Total Execution time: {(end_inference - start_inference) * 1000} ms")
     
 def with_fusion_without_tensorrt():
-    model = torchvision.models.efficientnet_v2_s()
+    model = torchvision.models.efficientnet_v2_m()
 
     part_0 = get_first_stage_efficientNet(model)
 

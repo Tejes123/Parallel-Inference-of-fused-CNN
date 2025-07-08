@@ -35,7 +35,7 @@ def get_second_stage_efficientNet(efficientnet):
 
     stage1 = nn.Sequential(
         nn.Sequential(*children_list[5][5:]),
-        nn.Sequential(*children_list[6][0:7]) # continue    
+        nn.Sequential(*children_list[6][0:9]) # continue    
     )
 
     return stage1  
@@ -48,7 +48,7 @@ def get_third_stage_efficientNet(efficientnet):
     children_list = list(model.children())
 
     stage2 = nn.Sequential(
-        nn.Sequential(*list(children_list[6][7:])),
+        nn.Sequential(*list(children_list[6][9:])),
         children_list[7],
         children_list[8], # Conv2dNormActivation
         e_avg_pool,

@@ -39,7 +39,7 @@ def without_fusion_without_tensorrt():
     outputs = []
 
     # Define the model
-    model = torchvision.models.efficientnet_v2_s()
+    model = torchvision.models.efficientnet_v2_m()
     
     stage_1 = get_third_stage_efficientNet(model)
     stage_1.load_state_dict(torch.load(PATH_RESNET_NO_LAYER_NO_TENSORRT_MODEL_2, weights_only = True))
@@ -118,7 +118,7 @@ def with_fuson_without_tensorrt():
     outputs = []
 
     # Define the model
-    model = torchvision.models.efficientnet_v2_s()
+    model = torchvision.models.efficientnet_v2_m()
     
     stage_1 = get_third_stage_efficientNet(model)
 
@@ -200,7 +200,7 @@ def check_third():
     outputs = []
 
     # Define the model
-    model = torchvision.models.GoogLeNet()
+    model = torchvision.models.efficientnet_v2_m()
     
     stage_0 = get_first_stage_efficientNet(model)
     stage_1 = get_second_stage_efficientNet(model)
