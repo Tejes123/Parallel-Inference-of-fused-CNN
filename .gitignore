@@ -2,7 +2,10 @@ densenet/stage_0
 densenet/stage_1
 densenet/stage_2
 densenet/__pycache__
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0227ff5c5faad520a58bc651ff5910b86f28e8b4
 Resnet - 3 nodes parallelism/stage_0
 Resnet - 3 nodes parallelism/stage_1
 Resnet - 3 nodes parallelism/stage_2
@@ -12,6 +15,7 @@ googleLeNet/stage_0
 googleLeNet/stage_1
 googleLeNet/stage_2
 
+<<<<<<< HEAD
 efficientNet_v2_medium/stage_0
 efficientNet_v2_medium/stage_1
 efficientNet_v2_medium/stage_2
@@ -20,8 +24,13 @@ efficientNet_v2_small/stage_0
 efficientNet_v2_small/stage_1
 efficientNet_v2_small/stage_2
 
+=======
+>>>>>>> 0227ff5c5faad520a58bc651ff5910b86f28e8b4
 cifar-10-batches-py
 muruga
 Results.docx
 Unwanted files
 ~$esults.docx
+
+efficientNet_v2_small
+efficientNet_v2_medium
