@@ -1,0 +1,38 @@
+Conv  
+norm  // 1
+relu 
+pool 
+ 
+DenseBlock 1 - (6 DL), transition 1    (7) 
+DenseBlock 2 - (12 DL), transition 2     (13) 
+DenseBlock 3 - (32 DL), transiton 3     (33) 
+DenseBlock 4 - (32 DL),         (32) 
+ 
+norm 5 
+Linearden // 1 
+
+
+Total : 87 
+
+
+        PCO 
+Conv  // 1 
+norm 
+relu 
+pool 
+
+
+DenseBlock 1 - (6 DL), transition 1 
+DenseBlock 2 - (12 DL), transition 2  
+DenseBlock 3 - (1:9)  
+
+
+        PC1
+denseblock 3 - (10:32), transition 
+denseblock 4 - (1:5) 
+
+
+        PC2
+denseblock 4 - (6: 32) 
+norm 5 
+Linearden      
