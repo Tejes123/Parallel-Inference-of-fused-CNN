@@ -57,6 +57,7 @@ def without_fusion_without_tensorrt():
     print(int(socket.getsockopt(zmq.SNDBUF)))
 
     start_inference = time.time()
+    
     for (i, batch) in enumerate(data_loader):
         
         (input_data, label) = batch
@@ -75,7 +76,9 @@ def without_fusion_without_tensorrt():
         total_inference_time_time += batch_time
     end_inference = time.time()
     print(f"Total Inferene Time Taken: {total_inference_time_time * 1000:.3f} ms")
+    print(f"Inference Start Time: {start_inference * 1000:.3f} ms")
     print(f"Total Execution time: {(end_inference - start_inference) * 1000} ms")
+
     socket.close()
 
 
@@ -103,6 +106,7 @@ def without_fusion_with_tensorrt():
         total_time += batch_time
     end_inference = time.time()
     print(f"Total time taken: {total_time * 1000:.3f} ms")
+    print(f"Inference Start Time: {start_inference * 1000:.3f} ms")
     print(f"Total Execution time: {(end_inference - start_inference) * 1000} ms")
     
 def with_fusion_without_tensorrt():
@@ -135,6 +139,7 @@ def with_fusion_without_tensorrt():
         
     end_inference = time.time()
     print(f"Total Time Taken: {total_time * 1000:.3f} ms")
+    print(f"Inference Start Time: {start_inference * 1000:.3f} ms")
     print(f"Total Execution time: {(end_inference - start_inference) * 1000} ms")
 
 def with_fusion_with_tensorrt():
@@ -160,6 +165,7 @@ def with_fusion_with_tensorrt():
         total_time += batch_time
     end_inference = time.time()
     print(f"Total time taken: {total_time * 1000:.3f} ms")    
+    print(f"Inference Start Time: {start_inference * 1000:.3f} ms")
     print(f"Total Execution time: {(end_inference - start_inference) * 1000} ms")
 
 # without_fusion_without_tensorrt() 

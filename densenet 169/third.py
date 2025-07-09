@@ -84,6 +84,7 @@ def without_fusion_without_tensorrt():
         # Temperorary
         if(batch_count == 624):
             print(f"Total Tim Taken in Third Stage: {total_time*1000:.3f} ms")
+            print(f"End Time: {end_execution_time * 1000:.3f} ms")
             print(f"Total Execution Time: {(total_execution_time * 1000):.3f} ms")
             break
 
@@ -122,6 +123,7 @@ def without_fusion_with_tensorrt():
 
         if(batch_count == 624):
             print(f"Total Time Taken for all Batches in Third Stage : {(total_time)*1000:.3f} ms")
+            print(f"End Time: {end_execution_time * 1000:.3f} ms")
             print(f"Total Exceution Time: f{total_execution_time * 1000 :.3f} ms")
             break
 
@@ -167,6 +169,7 @@ def with_fuson_without_tensorrt():
     
         if(batch_count == 624):
             print(f"Total Time Taken for {batch_count} batches in Third Stage: {total_time*1000:.2f} ms")
+            print(f"End Time: {end_execution_time * 1000:.3f} ms")
             print(f"Total Execution Time: f{total_execution_time * 1000:.3f} ms")
             break
 
@@ -206,6 +209,7 @@ def with_fusion_with_tensorrt():
 
         if(batch_count == 624):
             print(f"Total Time Taken for all Batches in stage 3: {(total_time)*1000:.3f} ms")
+            print(f"End Time: {end_execution_time * 1000:.3f} ms")
             print(f"Total Time Taken for {batch_count} batches in Third Stage: {total_time*1000:.2f} ms")
             break
 

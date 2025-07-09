@@ -24,19 +24,6 @@ PATH_RESNET_LAYER_NO_TENSORRT_0 = r"stage_0/densenet_layer_no_tensorrt_0.pth"
 PATH_RESNET_LAYER_TENSORRT_ONNX_0 = r"stage_0/densenet_layer_tensorrt_0.onnx"
 PATH_RESNET_LAYER_TENSORRT_ENGINE_0 = r"stage_0/densenet_layer_tensorrt_0.trt"
 
-# a Function that returns the modified Resnet50 model for CIFAR 10 dataset - last layer has size 10 
-# def get_resnet50_for_CIFAR10():
-#     # CIFAR 10 has 10 classes, so the last layer should be a fully conneted with size 10
-#     net = torchvision.models.resnet50()
-
-#     # Get the number of input features to the last fully connected layer
-#     in_features = net.fc.in_features
-
-#     # Replace the last fully connected layer with a new one for 10 classes
-#     net.fc = nn.Linear(in_features, 10)
-#     return net
-
-#     return host_output  
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 context = zmq.Context()
 socket = context.socket(zmq.PUSH)
@@ -78,6 +65,7 @@ def without_fusion_without_tensorrt():
         total_inference_time_time += batch_time
     end_inference = time.time()
     print(f"Total Inferene Time Taken: {total_inference_time_time * 1000:.3f} ms")
+    print(f"Inference Start Time: {start_inference * 1000:.3f} ms")
     print(f"Total Execution time: {(end_inference - start_inference) * 1000:.3f} ms")
     socket.close()
 
@@ -106,6 +94,7 @@ def without_fusion_with_tensorrt():
         total_time += batch_time
     end_inference = time.time()
     print(f"Total time taken: {total_time * 1000:.3f} ms")
+    print(f"Inference Start Time: {start_inference * 1000:.3f} ms")
     print(f"Total Execution time: {(end_inference - start_inference) * 1000} ms")
     
 def with_fusion_without_tensorrt():
@@ -140,6 +129,7 @@ def with_fusion_without_tensorrt():
         
     end_inference = time.time()
     print(f"Total Time Taken: {total_time * 1000:.3f} ms")
+    print(f"Inference Start Time: {start_inference * 1000:.3f} ms")
     print(f"Total Execution time: {(end_inference - start_inference) * 1000} ms")
 
 def with_fusion_with_tensorrt():
@@ -165,6 +155,7 @@ def with_fusion_with_tensorrt():
         total_time += batch_time
     end_inference = time.time()
     print(f"Total time taken: {total_time * 1000:.3f} ms")    
+    print(f"Inference Start Time: {start_inference * 1000:.3f} ms")
     print(f"Total Execution time: {(end_inference - start_inference) * 1000} ms")
 
 without_fusion_without_tensorrt() 
