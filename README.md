@@ -72,7 +72,11 @@ with_fusion_with_tensorrt()
 third.py ---> second.py ----> first.py
 ```
 
-    We run the first.py after the two functions, as first.py starts the inference and there should be sockets open and listening to recieve the activations from first.py
+We run the first.py after the two functions, as first.py starts the inference and there should be sockets open and listening to recieve the activations from first.py
+
+
+Recordings Doc Link: https://docs.google.com/document/d/1TcfALvlPAt8nJTxgYsxV9HGFnXy5JUbHPFCmC3LvPaE/edit?usp=sharing
+
 
 
 
