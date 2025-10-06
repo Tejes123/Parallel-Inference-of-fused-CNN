@@ -49,7 +49,7 @@ data_loader = get_test_loader(batch_size = 16)
 train_data_loader = get_complete_loader(batch_size = 16)
 
 cpu_interval = 0.5 
-stop_cpu_monotoring = False 
+stop_cpu_monitoring = False 
 
 process = psutil.Process(os.getpid()) 
 
@@ -59,22 +59,22 @@ def monitor_cpu(cpu_readings):
 
     cpu_one = process.cpu_percent(interval = None)
 
-    while not stop_cpu_monotoring:
-        # time.sleep(interval)
+    while not stop_cpu_monitoring:
         usage = process.cpu_percent(interval = cpu_interval)
         cpu_readings.append(usage)  
+    
+    return
+
 
 def without_fusion_without_tensorrt():
+    global stop_cpu_monitoring
+    stop_cpu_monitoring = False
+
     model = torchvision.models.resnet152().eval()
     part_0 = get_first_stage_resnet(model)
     part_0.load_state_dict(torch.load(PATH_RESNET_NO_LAYER_NO_TENSORRT_MODEL_0, weights_only=True))  
     stage_0 = part_0.to(device)
     total_inference_time_time = 0
-
-    socket.setsockopt(zmq.SNDBUF, 2* 1024)
-    socket.setsockopt(zmq.SNDBUF, 2 * 1024 )
-
-    print(int(socket.getsockopt(zmq.SNDBUF)))
 
     start_inference = time.time()
 
@@ -84,9 +84,8 @@ def without_fusion_without_tensorrt():
 
     monitor_thread.start()
 
-    
     for (i, batch) in enumerate(data_loader):
-
+        
         (input_data, label) = batch
         input_data = input_data.to(device)
 
@@ -95,16 +94,13 @@ def without_fusion_without_tensorrt():
         batch_time = time.time() - start_time
 
         output_activation = output_activation.to("cpu")
-        serialized_act = pickle.dumps(output_activation)
-        
-        socket.send(serialized_act)
-        
+
         print(f"Batch {i} : Sent | Time Taken: {batch_time * 1000:.3f} ms")
         total_inference_time_time += batch_time
-    
-    stop_cpu_monotoring = True 
-    end_inference = time.time()
 
+    stop_cpu_monitoring = True
+    end_inference = time.time()
+    
     memory_info = process.memory_info()
     rss_mb = memory_info.rss / (1024 * 1024)  # Convert bytes to MB
 
@@ -114,13 +110,13 @@ def without_fusion_without_tensorrt():
     print(f"Total Inferene Time Taken: {total_inference_time_time * 1000:.3f} ms")
     print(f"Inference Start Time: {start_inference * 1000:.3f} ms")
     print(f"Total Execution time: {(end_inference - start_inference) * 1000} ms")
-    print(1)
-    # socket.close()
 
     return
 
 
 def without_fusion_with_tensorrt():
+    global stop_cpu_monitoring
+    stop_cpu_monitoring = False
 
     TRT_LOGGER = trt.Logger(trt.Logger.WARNING)
     runtime = trt.Runtime(TRT_LOGGER)
@@ -131,23 +127,43 @@ def without_fusion_with_tensorrt():
 
     total_time = 0
     start_inference = time.time()
+
+    # Create a thread for monitoring the CPU Utilization 
+    cpu_readings = []
+    monitor_thread = threading.Thread(target = monitor_cpu, args = (cpu_readings, ))
+
+    monitor_thread.start()
+
     for(i, batch) in enumerate(data_loader):
         start_time = time.time()
         (input_data, label) = batch 
         activation = engine_infer_single_batch(engine, context, input_data, i)
-        activation_serialized = pickle.dumps(activation)
         end_time = time.time() 
-        socket.send(activation_serialized)
         
         batch_time = end_time - start_time 
         print(f"Batch {i} : Sent | Time Taken: {batch_time * 1000:.3f} ms")
         total_time += batch_time
+
+
     end_inference = time.time()
+    stop_cpu_monitoring = True 
+
+    memory_info = process.memory_info()
+    rss_mb = memory_info.rss / (1024 * 1024)  # Convert bytes to MB
+
+    print("\n\t\t--------------------\n")
+    print(f"CPU Utilization : {(sum(cpu_readings) / len(cpu_readings)):.3f} %")
+    print(f"Total RAM Usage: {rss_mb:.3f} MB")
     print(f"Total time taken: {total_time * 1000:.3f} ms")
     print(f"Inference Start Time: {start_inference * 1000:.3f} ms")
     print(f"Total Execution time: {(end_inference - start_inference) * 1000} ms")
+
+    return 
     
 def with_fusion_without_tensorrt():
+    global stop_cpu_monitoring
+    stop_cpu_monitoring = False
+
     model = torchvision.models.resnet152().eval()
     part_0 = get_first_stage_resnet(model)
 
@@ -159,28 +175,45 @@ def with_fusion_without_tensorrt():
 
     total_time = 0
     start_inference = time.time()
+
+    # Create a thread for monitoring the CPU Utilization 
+    cpu_readings = []
+    monitor_thread = threading.Thread(target = monitor_cpu, args = (cpu_readings, ))
+
+    monitor_thread.start()
+
     for (i, batch) in enumerate(data_loader):
         
         (input_data, label) = batch
         input_data = input_data.to(device)
 
         start_time = time.time()
-        output_activation = fused_part_0(input_data)
+        output_activation = fused_part_0(input_data).to("cpu")
         batch_time = time.time() - start_time
 
         serialized_act = pickle.dumps(output_activation)
         socket.send(serialized_act)
-        
-
+    
         print(f"Batch {i} : Sent | Time Taken: {batch_time * 1000:.3f} ms")
         total_time += batch_time
         
     end_inference = time.time()
+    stop_cpu_monitoring = True 
+
+    memory_info = process.memory_info()
+    rss_mb = memory_info.rss / (1024 * 1024)  # Convert bytes to MB
+
+    print("\n\t\t--------------------\n")
+    print(f"CPU Utilization : {(sum(cpu_readings) / len(cpu_readings)):.3f} %")
+    print(f"Total RAM Usage: {rss_mb:.3f} MB")
     print(f"Total Time Taken: {total_time * 1000:.3f} ms")
     print(f"Inference Start Time: {start_inference * 1000:.3f} ms")
     print(f"Total Execution time: {(end_inference - start_inference) * 1000} ms")
 
 def with_fusion_with_tensorrt():
+    global stop_cpu_monitoring
+    stop_cpu_monitoring = False
+
     TRT_LOGGER = trt.Logger(trt.Logger.WARNING)
     runtime = trt.Runtime(TRT_LOGGER)
 
@@ -190,7 +223,14 @@ def with_fusion_with_tensorrt():
 
     total_time = 0
     start_inference = time.time()
-    for(i, batch) in enumerate(train_data_loader):
+
+    # Create a thread for monitoring the CPU Utilization 
+    cpu_readings = []
+    monitor_thread = threading.Thread(target = monitor_cpu, args = (cpu_readings, ))
+
+    monitor_thread.start()
+    
+    for(i, batch) in enumerate(data_loader):
         start_time = time.time()
         (input_data, label) = batch 
         activation = engine_infer_single_batch(engine, context, input_data, i)
@@ -201,12 +241,24 @@ def with_fusion_with_tensorrt():
         batch_time = end_time - start_time 
         print(f"Batch {i} : Sent | Time Taken: {batch_time * 1000:.3f} ms")
         total_time += batch_time
+
     end_inference = time.time()
+    stop_cpu_monitoring = True 
+
+    memory_info = process.memory_info()
+    rss_mb = memory_info.rss / (1024 * 1024)  # Convert bytes to MB
+
+    print("\n\t\t--------------------\n")
+    print(f"CPU Utilization : {(sum(cpu_readings) / len(cpu_readings)):.3f} %")
+    print(f"Total RAM Usage: {rss_mb:.3f} MB")
     print(f"Total time taken: {total_time * 1000:.3f} ms")    
     print(f"Inference Start Time: {start_inference * 1000:.3f} ms")
     print(f"Total Execution time: {(end_inference - start_inference) * 1000} ms")
 
-without_fusion_without_tensorrt() 
-# without_fusion_with_tensorrt()
-# with_fusion_without_tensorrt()
-# with_fusion_with_tensorrt() 
+# without_fusion_without_tensorrt() 
+# without_fusion_with_tensorrt() 
+# with_fusion_without_tensorrt() 
+with_fusion_with_tensorrt() 
+
+# L = []
+# monitor_cpu(L)

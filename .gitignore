@@ -3,6 +3,8 @@ Resnet - 3 nodes parallelism/stage_1
 Resnet - 3 nodes parallelism/stage_2
 Resnet - 3 nodes parallelism/__pycache__
 
+cifar-10-python.tar.gz
+
 densenet 169\stage_0
 densenet 169\stage_1
 densenet 169\stage_2
@@ -18,3 +20,4 @@ Unwanted files
 ~$esults.docx
 Readings.docx
 ~$adings.docx
+
