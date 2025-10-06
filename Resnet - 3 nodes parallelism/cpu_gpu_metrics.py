@@ -8,6 +8,9 @@ import torch
 import psutil
 import os 
 import threading
+from pynvml import *
+import GPUtil
+
 
 from fuse_models import fuse_resnet
 from data_loader import get_test_loader, get_complete_loader
@@ -53,15 +56,31 @@ stop_cpu_monitoring = False
 
 process = psutil.Process(os.getpid()) 
 
-def monitor_cpu(cpu_readings):
+def monitor_cpu(cpu_readings, gpu_util, gpu_mem):
+    # Initialize pynvml 
+    nvmlInit()
+    handle = nvmlDeviceGetHandleByIndex(0)
+
     pid = os.getpid()
     process = psutil.Process(pid = pid)
 
     cpu_one = process.cpu_percent(interval = None)
 
     while not stop_cpu_monitoring:
+        # CPU Utilization 
         usage = process.cpu_percent(interval = cpu_interval)
-        cpu_readings.append(usage)  
+        cpu_readings.append(usage) 
+
+        # GPU Memory 
+        memory_info = nvmlDeviceGetMemoryInfo(handle)
+        gpu_mem.append(memory_info.used // 1024**2)
+
+        # GPU Utilization 
+        gpu = GPUtil.getGPUs()[0]
+        utilization = (gpu.load * 100)
+        gpu_util.append(utilization)
+
+        time.sleep(0.2)
     
     return
 
@@ -78,9 +97,12 @@ def without_fusion_without_tensorrt():
 
     start_inference = time.time()
 
-    # Create a thread for monitoring the CPU Utilization 
+    # Create a thread for monitoring the CPU and GPU 
     cpu_readings = []
-    monitor_thread = threading.Thread(target = monitor_cpu, args = (cpu_readings, ))
+    gpu_util = []
+    gpu_memory = [] 
+
+    monitor_thread = threading.Thread(target = monitor_cpu, args = (cpu_readings, gpu_util, gpu_memory))
 
     monitor_thread.start()
 
@@ -99,6 +121,8 @@ def without_fusion_without_tensorrt():
         total_inference_time_time += batch_time
 
     stop_cpu_monitoring = True
+    monitor_thread.join()
+
     end_inference = time.time()
     
     memory_info = process.memory_info()
@@ -107,6 +131,8 @@ def without_fusion_without_tensorrt():
     print("\n\t\t--------------------\n")
     print(f"CPU Utilization : {(sum(cpu_readings) / len(cpu_readings)):.3f} %")
     print(f"Total RAM Usage: {rss_mb:.3f} MB")
+    print(f"Average GPU Utilization: {(sum(gpu_util) / len(gpu_util)):.3f} %")
+    print(f"Average GPU Memory Used: {(sum(gpu_memory) / len(gpu_memory)):.3f} MB")
     print(f"Total Inferene Time Taken: {total_inference_time_time * 1000:.3f} ms")
     print(f"Inference Start Time: {start_inference * 1000:.3f} ms")
     print(f"Total Execution time: {(end_inference - start_inference) * 1000} ms")
@@ -255,10 +281,10 @@ def with_fusion_with_tensorrt():
     print(f"Inference Start Time: {start_inference * 1000:.3f} ms")
     print(f"Total Execution time: {(end_inference - start_inference) * 1000} ms")
 
-# without_fusion_without_tensorrt() 
+without_fusion_without_tensorrt() 
 # without_fusion_with_tensorrt() 
 # with_fusion_without_tensorrt() 
-with_fusion_with_tensorrt() 
+# with_fusion_with_tensorrt() 
 
 # L = []
 # monitor_cpu(L)

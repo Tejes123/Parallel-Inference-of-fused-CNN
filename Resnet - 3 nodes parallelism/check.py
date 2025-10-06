@@ -3,6 +3,7 @@ import time
 import psutil 
 import os 
 from pynvml import *
+import GPUtil 
 
 # cpu_readings = [] 
 # ram_readings = [] 
@@ -42,20 +43,23 @@ def monitor_gpu():
 
         # Get memory information  
         memory_info = nvmlDeviceGetMemoryInfo(handle)
-        gpu_mem.append(memory_info.used)
-        print(f"Used Memory: {memory_info.used // 1024**2} MB")
+        gpu_mem.append(memory_info.used // 1024**2)
+        # print(f"Used Memory: {memory_info.used // 1024**2} MB")
 
         # Get GPU utilization
         # utilization = nvmlDeviceGetUtilizationRates(handle)
         # gpu_util.append(utilization.gpu)
         # print(f"GPU Utilization: {utilization.gpu}%")
+        gpu = GPUtil.getGPUs()[0]
+        utilization = (gpu.load * 100)
+        gpu_util.append(utilization)
 
         time.sleep(1)
 
 thread = threading.Thread(target = monitor_gpu)
 thread.start()
 
-time.sleep(5)
+time.sleep(10)
 
 stop_gpu_monitoring = True 
 # # thread.join()
