@@ -77,7 +77,7 @@ PATH_RESNET_LAYER_TENSORRT_ENGINE_2 = r"stage_2/densenet_layer_tensorrt_2.trt"
 batch_size = 16 
 
 """
-sTEPS TO SET
+STEPS TO SET
 1. Model without layer fuion without tensorrt - Done
 2. Model without layer fusion with tensorrt - Done
 3. Model with layer fusion and without tensorrt - 
@@ -326,21 +326,21 @@ def create_onnx_and_engine_for_stage2(model_path_stage_2, fused = False, batch_s
 if __name__ == "__main__":
     print("\n\n @@@@@@@@@@@@@@@@@@@@ WITHOUT FUSION WITHOUT TENSORRT @@@@@@@@@@@@@@@\n\n")
     save_model_witout_fusion_witout_tensorrt(stage = 0)  
-    save_model_witout_fusion_witout_tensorrt(stage = 1)
-    save_model_witout_fusion_witout_tensorrt(stage = 2)
+    # save_model_witout_fusion_witout_tensorrt(stage = 1)
+    # save_model_witout_fusion_witout_tensorrt(stage = 2)
 
     print("\n\n @@@@@@@@@@@@@@@@@@@@ WITHOUT FUSION WITH TENSORRT @@@@@@@@@@@@@@@\n\n")
     save_model_without_fusion_with_tensorrt(stage = 0)
-    save_model_without_fusion_with_tensorrt(stage = 1)
-    save_model_without_fusion_with_tensorrt(stage = 2)
+    # save_model_without_fusion_with_tensorrt(stage = 1)
+    # save_model_without_fusion_with_tensorrt(stage = 2)
 
     print("\n\n @@@@@@@@@@@@@@@@@@@@ WITH FUSION WITHOUT TENSORRT @@@@@@@@@@@@@@@\n\n")
     save_model_with_fusion_without_tensorrt(stage = 0)
-    save_model_with_fusion_without_tensorrt(stage = 1)
-    save_model_with_fusion_without_tensorrt(stage = 2)
+    # save_model_with_fusion_without_tensorrt(stage = 1)
+    # save_model_with_fusion_without_tensorrt(stage = 2)
 
     print("\n\n @@@@@@@@@@@@@@@@@@@@ WITH FUSION WITH TENSORRT @@@@@@@@@@@@@@@\n\n")
-    save_model_with_fusion_with_tensorrt(stage = 0)
-    save_model_with_fusion_with_tensorrt(stage = 1)
-    save_model_with_fusion_with_tensorrt(stage = 2)
+    save_model_with_fusion_with_tensorrt(stage = 0)    
+    # save_model_with_fusion_with_tensorrt(stage = 1) 
+    # save_model_with_fusion_with_tensorrt(stage = 2) 
 
